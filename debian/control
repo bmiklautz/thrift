@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 9), build-essential, python-dev, ant,
     bison, flex, libboost-dev | libboost1.53-dev,
     python-all, python-setuptools, python-all-dev, python-all-dbg,
     python3-all, python3-setuptools, python3-all-dev, python3-all-dbg,
-    openjdk-6-jdk | java-sdk, libboost-test-dev | libboost-test1.53-dev, libevent-dev, libssl-dev,
+    default-jdk | java-sdk, libboost-test-dev | libboost-test1.53-dev, libevent-dev, libssl-dev,
     libglib2.0-dev, qtbase5-dev, qtbase5-dev-tools, qt5-default
 Maintainer: Thrift Developer's <dev@thrift.apache.org>
 Homepage: http://thrift.apache.org/
