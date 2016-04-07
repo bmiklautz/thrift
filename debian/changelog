@@ -1,4 +1,4 @@
-thrift (1.0.0-dev) stable; urgency=low
+thrift (1.0.0~dev) stable; urgency=low
   * update version
   * fix libthrift0.install
 
