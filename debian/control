@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 9), build-essential, python-dev, ant,
     bison, flex, libboost-dev | libboost1.53-dev,
     python-all, python-setuptools, python-all-dev, python-all-dbg,
     python3-all, python3-setuptools, python3-all-dev, python3-all-dbg,
-    default-jdk | java-sdk, libboost-test-dev | libboost-test1.53-dev, libevent-dev, libssl-dev,
+    libboost-test-dev | libboost-test1.53-dev, libevent-dev, libssl-dev,
     libglib2.0-dev, qtbase5-dev, qtbase5-dev-tools, qt5-default
 Maintainer: Thrift Developer's <dev@thrift.apache.org>
 Homepage: http://thrift.apache.org/
@@ -119,20 +119,6 @@ Description: Ruby bindings for Thrift
  .
  This package contains the Ruby bindings for Thrift. You will need the thrift
  tool (in the thrift-compiler package) to compile your definition to Ruby
- classes, and then the modules in this package will allow you to use those
- classes in your programs.
-
-Package: libthrift-java
-Architecture: all
-Section: java
-Depends: java-gcj-compat | java1-runtime | java2-runtime, ${misc:Depends}
-Description: Java bindings for Thrift
- Thrift is a software framework for scalable cross-language services
- development. It combines a software stack with a code generation engine to
- build services that work efficiently and seamlessly.
- .
- This package contains the Java bindings for Thrift. You will need the thrift
- tool (in the thrift-compiler package) to compile your definition to Java
  classes, and then the modules in this package will allow you to use those
  classes in your programs.
 

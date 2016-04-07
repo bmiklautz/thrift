@@ -71,10 +71,6 @@ build-indep-stamp: configure-stamp $(CURDIR)/compiler/cpp/thrift
 	# Add here commands to compile the indep part of the package.
 	#$(MAKE) doc
 
-	# Java
-	cd $(CURDIR)/lib/java && \
-		ant
-
 	# Ruby
 	$(MAKE) -C $(CURDIR)/lib/rb
 
@@ -105,11 +101,6 @@ install-indep:
 	# Add here commands to install the indep part of the package into
 	# debian/<package>-doc.
 	#INSTALLDOC#
-
-	# Java
-	mkdir -p $(CURDIR)/debian/libthrift-java/usr/share/java/ && \
-	cp $(CURDIR)/lib/java/build/libthrift*.jar \
-		$(CURDIR)/debian/libthrift-java/usr/share/java/
 
 	# Ruby
 	#mkdir -p $(CURDIR)/debian/ruby-thrift/usr/lib/ruby/1.9.1 && \
