@@ -19,23 +19,42 @@
 
 %define without_java 1
 %define without_python 1
-%define without_tests 1
+%define without_ruby 1
+%define without_php 1
+%define without_qt4 1
+%define without_qt5 1
+%define without_tests 0
 
 %{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           thrift
-License:        Apache License v2.0
+%if %{defined fedora}
+License:        ASL 2.0
+%else
+License:        Apache-2.0
+%endif
 Group:          Development
 Summary:        RPC and serialization framework
-Version:        0.9.1
+Version:        1.0.0~dev
 Release:        0
 URL:            http://thrift.apache.org
-Packager:       Thrift Developers <dev@thrift.apache.org>
-Source0:        %{name}-%{version}.tar.gz
-
+Source0:        %{name}-%{version}.tar.xz
 BuildRequires:  gcc >= 3.4.6
 BuildRequires:  gcc-c++
+BuildRequires:  libtool
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  bison
+BuildRequires:  flex
+BuildRequires:  boost-devel
+%if %{defined fedora}
+BuildRequires:  pkgconfig
+BuildRequires:  openssl-devel
+%else
+BuildRequires:  pkg-config
+BuildRequires:  libopenssl-devel
+%endif
 
 %if 0%{!?without_java:1}
 BuildRequires:  java-devel >= 0:1.5.0
@@ -52,7 +71,7 @@ BuildRequires:  ruby-devel
 BuildRequires:  rubygems-devel
 %endif
 
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-build
 
 %description
 Thrift is a software framework for scalable cross-language services
@@ -81,8 +100,17 @@ C++ libraries for Thrift.
 
 %package lib-cpp-devel
 Summary:   Thrift C++ library development files
-Group:     Libraries
+%if %{defined fedora}
+Group:     Development/Libraries
+%else
+Group:     Development/Libraries/C and C++
+%endif
 Requires:  %{name} = %{version}-%{release}
+%if %{defined fedora}
+BuildRequires:  openssl-devel
+%else
+BuildRequires:  libopenssl-devel
+%endif
 Requires:  boost-devel
 %if 0%{!?without_libevent:1}
 Requires:  libevent-devel >= 1.2
@@ -167,6 +195,7 @@ PHP libraries for Thrift.
 export GEM_HOME=${PWD}/.gem-home
 export RUBYLIB=${PWD}/lib/rb/lib
 %configure \
+  --with-pic \
   %{?without_libevent: --without-libevent } \
   %{?without_zlib:     --without-zlib     } \
   %{?without_tests:    --without-tests    } \
@@ -174,11 +203,18 @@ export RUBYLIB=${PWD}/lib/rb/lib
   %{?without_python:   --without-python   } \
   %{?without_ruby:     --without-ruby     } \
   %{?without_php:      --without-php      } \
+  %{?without_qt4:      --without-qt4      } \
+  %{?without_qt5:      --without-qt5      } \
   %{!?without_php:     PHP_PREFIX=${RPM_BUILD_ROOT}/usr/lib/php } \
   --without-csharp \
   --without-erlang \
+  --without-haxe \
+  --without-c_glib \
+  --without-haskell \
+  --without-go \
+  --without-d
 
-make %{?_smp_mflags}
+make 
 
 %if 0%{!?without_java:1}
 cd lib/java
@@ -234,5 +270,7 @@ umask 007
 /sbin/ldconfig > /dev/null 2>&1
 
 %changelog
+* Tue May 24 2016 Bernhard Miklautz <bernhard.miklautz@thincast.com> - 1.0.0~dev-0
+- update package to 1.0.0~dev
 * Wed Oct 10 2012 Thrift Dev <dev@thrift.apache.org> 
 - Thrift 0.9.0 release.
