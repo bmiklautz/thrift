@@ -40,7 +40,7 @@ enum CLIENT_TYPE {
   THRIFT_UNFRAMED_BINARY = 2,
   THRIFT_FRAMED_COMPACT = 3,
   THRIFT_UNFRAMED_COMPACT = 4,
-  THRIFT_UNKNOWN_CLIENT_TYPE = 5,
+  THRIFT_UNKNOWN_CLIENT_TYPE = 5
 };
 
 namespace apache {
@@ -160,7 +160,7 @@ public:
   void setSequenceNumber(int32_t seqId) { this->seqId = seqId; }
 
   enum TRANSFORMS {
-    ZLIB_TRANSFORM = 0x01,
+    ZLIB_TRANSFORM = 0x01
   };
 
 protected:

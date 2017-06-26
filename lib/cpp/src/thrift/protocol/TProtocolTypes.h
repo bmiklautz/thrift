@@ -27,7 +27,7 @@ namespace protocol {
 enum PROTOCOL_TYPES {
   T_BINARY_PROTOCOL = 0,
   T_JSON_PROTOCOL = 1,
-  T_COMPACT_PROTOCOL = 2,
+  T_COMPACT_PROTOCOL = 2
 };
 }
 }

@@ -157,10 +157,12 @@ SSLContext::SSLContext(const SSLProtocol& protocol) {
 #endif
   } else if (protocol == TLSv1_0) {
     ctx_ = SSL_CTX_new(TLSv1_method());
+#if (OPENSSL_VERSION_NUMBER >= 0x10000000L)
   } else if (protocol == TLSv1_1) {
     ctx_ = SSL_CTX_new(TLSv1_1_method());
   } else if (protocol == TLSv1_2) {
     ctx_ = SSL_CTX_new(TLSv1_2_method());
+#endif
   } else {
     /// UNKNOWN PROTOCOL!
     throw TSSLException("SSL_CTX_new: Unknown protocol");
