@@ -296,12 +296,13 @@ void TSSLSocket::open() {
 void TSSLSocket::close() {
   if (ssl_ != NULL) {
     int rc;
+    int error;
 
     do {
       rc = SSL_shutdown(ssl_);
       if (rc <= 0) {
         int errno_copy = THRIFT_GET_SOCKET_ERROR;
-        int error = SSL_get_error(ssl_, rc);
+        error = SSL_get_error(ssl_, rc);
         switch (error) {
           case SSL_ERROR_SYSCALL:
             if ((errno_copy != THRIFT_EINTR)
@@ -320,8 +321,11 @@ void TSSLSocket::close() {
     if (rc < 0) {
       int errno_copy = THRIFT_GET_SOCKET_ERROR;
       string errors;
-      buildErrors(errors, errno_copy);
-      GlobalOutput(("SSL_shutdown: " + errors).c_str());
+      /* Ignore broken pipe aka the client shut down before */
+      if (error != SSL_ERROR_SYSCALL || errno_copy != THRIFT_EPIPE) {
+	      buildErrors(errors, errno_copy);
+	      GlobalOutput(("SSL_shutdown: " + errors).c_str());
+      }
     }
     SSL_free(ssl_);
     ssl_ = NULL;
