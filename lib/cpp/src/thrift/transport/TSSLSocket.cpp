@@ -47,6 +47,7 @@
 #include <thrift/transport/PlatformSocket.h>
 
 #define OPENSSL_VERSION_NO_THREAD_ID 0x10000000L
+#define OPENSSL_VERSION_WITH_TLSv1_1_AND_TLSv1_2 0x10100000L
 
 using namespace std;
 using namespace apache::thrift::concurrency;
@@ -108,7 +109,11 @@ void initializeOpenSSL() {
   SSL_library_init();
   SSL_load_error_strings();
   // static locking
+#ifdef CRYPTO_num_locks
+  mutexes = boost::shared_array<Mutex>(new Mutex[CRYPTO_num_locks()]);
+#else
   mutexes = boost::shared_array<Mutex>(new Mutex[ ::CRYPTO_num_locks()]);
+#endif
   if (mutexes == NULL) {
     throw TTransportException(TTransportException::INTERNAL_ERROR,
                               "initializeOpenSSL() failed, "
@@ -157,7 +162,7 @@ SSLContext::SSLContext(const SSLProtocol& protocol) {
 #endif
   } else if (protocol == TLSv1_0) {
     ctx_ = SSL_CTX_new(TLSv1_method());
-#if (OPENSSL_VERSION_NUMBER >= 0x10000000L)
+#if (OPENSSL_VERSION_NUMBER >= OPENSSL_VERSION_WITH_TLSv1_1_AND_TLSv1_2)
   } else if (protocol == TLSv1_1) {
     ctx_ = SSL_CTX_new(TLSv1_1_method());
   } else if (protocol == TLSv1_2) {
