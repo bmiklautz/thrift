@@ -53,7 +53,11 @@ BuildRequires:  pkgconfig
 BuildRequires:  openssl-devel
 %else
 BuildRequires:  pkg-config
+%if 0%{?sle_version} >= 150700
+BuildRequires:  libopenssl-1_1-devel
+%else
 BuildRequires:  libopenssl-devel
+%endif
 %endif
 
 %if 0%{!?without_java:1}
@@ -109,7 +113,11 @@ Requires:  %{name} = %{version}-%{release}
 %if %{defined fedora}
 BuildRequires:  openssl-devel
 %else
+%if 0%{?sle_version} >= 150700
+BuildRequires:  libopenssl-1_1-devel
+%else
 BuildRequires:  libopenssl-devel
+%endif
 %endif
 Requires:  boost-devel
 %if 0%{!?without_libevent:1}
